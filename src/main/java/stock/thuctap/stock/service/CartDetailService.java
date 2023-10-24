@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import stock.thuctap.stock.domain.Cart;
 import stock.thuctap.stock.domain.CartDetail;
+import stock.thuctap.stock.domain.CartDetailId;
 import stock.thuctap.stock.domain.SockDetail;
 import stock.thuctap.stock.model.CartDetailDTO;
 import stock.thuctap.stock.repos.CartDetailRepository;
@@ -34,31 +35,30 @@ public class CartDetailService {
                 .toList();
     }
 
-    public CartDetailDTO get(final Long id) {
+    public CartDetailDTO get(final CartDetailId id) {
         return cartDetailRepository.findById(id)
                 .map(cartDetail -> mapToDTO(cartDetail, new CartDetailDTO()))
                 .orElseThrow(NotFoundException::new);
     }
 
-    public Long create(final CartDetailDTO cartDetailDTO) {
+    public CartDetailId create(final CartDetailDTO cartDetailDTO) {
         final CartDetail cartDetail = new CartDetail();
         mapToEntity(cartDetailDTO, cartDetail);
         return cartDetailRepository.save(cartDetail).getId();
     }
 
-    public void update(final Long id, final CartDetailDTO cartDetailDTO) {
+    public void update(final CartDetailId id, final CartDetailDTO cartDetailDTO) {
         final CartDetail cartDetail = cartDetailRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         mapToEntity(cartDetailDTO, cartDetail);
         cartDetailRepository.save(cartDetail);
     }
 
-    public void delete(final Long id) {
+    public void delete(final CartDetailId id) {
         cartDetailRepository.deleteById(id);
     }
 
     private CartDetailDTO mapToDTO(final CartDetail cartDetail, final CartDetailDTO cartDetailDTO) {
-        cartDetailDTO.setId(cartDetail.getId());
         cartDetailDTO.setUpdatedAt(cartDetail.getUpdatedAt());
         cartDetailDTO.setDeleted(cartDetail.getDeleted());
         cartDetailDTO.setQuantity(cartDetail.getQuantity());
