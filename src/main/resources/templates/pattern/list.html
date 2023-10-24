@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{pattern.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{pattern.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/patterns/add}" th:text="#{pattern.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${patterns.empty}" th:text="#{pattern.list.empty}" />
+            <div th:if="${!patterns.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{pattern.id.label}" scope="col" />
+                            <th th:text="#{pattern.code.label}" scope="col" />
+                            <th th:text="#{pattern.name.label}" scope="col" />
+                            <th th:text="#{pattern.status.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="pattern : ${patterns}">
+                            <td th:text="${pattern.id}" />
+                            <td th:text="${pattern.code}" />
+                            <td th:text="${pattern.name}" />
+                            <td th:text="${pattern.status}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/patterns/edit/{id}(id=${pattern.id})}" th:text="#{pattern.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/patterns/delete/{id}(id=${pattern.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{pattern.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

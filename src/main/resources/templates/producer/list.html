@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{producer.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{producer.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/producers/add}" th:text="#{producer.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${producers.empty}" th:text="#{producer.list.empty}" />
+            <div th:if="${!producers.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{producer.id.label}" scope="col" />
+                            <th th:text="#{producer.code.label}" scope="col" />
+                            <th th:text="#{producer.name.label}" scope="col" />
+                            <th th:text="#{producer.status.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="producer : ${producers}">
+                            <td th:text="${producer.id}" />
+                            <td th:text="${producer.code}" />
+                            <td th:text="${producer.name}" />
+                            <td th:text="${producer.status}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/producers/edit/{id}(id=${producer.id})}" th:text="#{producer.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/producers/delete/{id}(id=${producer.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{producer.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

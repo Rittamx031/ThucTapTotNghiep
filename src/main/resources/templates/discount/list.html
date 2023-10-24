@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{discount.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{discount.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/discounts/add}" th:text="#{discount.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${discounts.empty}" th:text="#{discount.list.empty}" />
+            <div th:if="${!discounts.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{discount.id.label}" scope="col" />
+                            <th th:text="#{discount.couponCode.label}" scope="col" />
+                            <th th:text="#{discount.name.label}" scope="col" />
+                            <th th:text="#{discount.validFrom.label}" scope="col" />
+                            <th th:text="#{discount.validUntil.label}" scope="col" />
+                            <th th:text="#{discount.discountValue.label}" scope="col" />
+                            <th th:text="#{discount.status.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="discount : ${discounts}">
+                            <td th:text="${discount.id}" />
+                            <td th:text="${discount.couponCode}" />
+                            <td th:text="${discount.name}" />
+                            <td th:text="${discount.validFrom}" />
+                            <td th:text="${discount.validUntil}" />
+                            <td th:text="${discount.discountValue}" />
+                            <td th:text="${discount.status}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/discounts/edit/{id}(id=${discount.id})}" th:text="#{discount.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/discounts/delete/{id}(id=${discount.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{discount.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

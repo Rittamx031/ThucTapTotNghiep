@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{blog.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{blog.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/blogs/add}" th:text="#{blog.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${blogs.empty}" th:text="#{blog.list.empty}" />
+            <div th:if="${!blogs.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{blog.id.label}" scope="col" />
+                            <th th:text="#{blog.title.label}" scope="col" />
+                            <th th:text="#{blog.dateCreate.label}" scope="col" />
+                            <th th:text="#{blog.dateUpdate.label}" scope="col" />
+                            <th th:text="#{blog.status.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="blog : ${blogs}">
+                            <td th:text="${blog.id}" />
+                            <td th:text="${blog.title}" />
+                            <td th:text="${blog.dateCreate}" />
+                            <td th:text="${blog.dateUpdate}" />
+                            <td th:text="${blog.status}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/blogs/edit/{id}(id=${blog.id})}" th:text="#{blog.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/blogs/delete/{id}(id=${blog.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{blog.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

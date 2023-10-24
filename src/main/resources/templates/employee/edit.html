@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{employee.edit.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{employee.edit.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/employees}" th:text="#{employee.edit.back}" class="btn btn-secondary" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('employee')}" />
+            <form th:action="${requestUri}" method="post">
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='id', disabled=true, type='number')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='updatedAt', inputClass='js-datetimepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='deleted', type='checkbox')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='name')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='birthday')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='phone')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='address')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='email')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='password', type='textarea')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='status', type='checkbox')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='employee', field='role', type='select')}" />
+                <input type="submit" th:value="#{employee.edit.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>

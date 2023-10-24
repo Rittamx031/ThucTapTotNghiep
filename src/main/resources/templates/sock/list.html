@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{sock.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{sock.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/socks/add}" th:text="#{sock.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${socks.empty}" th:text="#{sock.list.empty}" />
+            <div th:if="${!socks.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{sock.id.label}" scope="col" />
+                            <th th:text="#{sock.code.label}" scope="col" />
+                            <th th:text="#{sock.name.label}" scope="col" />
+                            <th th:text="#{sock.status.label}" scope="col" />
+                            <th th:text="#{sock.category.label}" scope="col" />
+                            <th th:text="#{sock.producer.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sock : ${socks}">
+                            <td th:text="${sock.id}" />
+                            <td th:text="${sock.code}" />
+                            <td th:text="${sock.name}" />
+                            <td th:text="${sock.status}" />
+                            <td th:text="${sock.category}" />
+                            <td th:text="${sock.producer}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/socks/edit/{id}(id=${sock.id})}" th:text="#{sock.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/socks/delete/{id}(id=${sock.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{sock.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

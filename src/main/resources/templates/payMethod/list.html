@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{payMethod.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{payMethod.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/payMethods/add}" th:text="#{payMethod.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${payMethods.empty}" th:text="#{payMethod.list.empty}" />
+            <div th:if="${!payMethods.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{payMethod.id.label}" scope="col" />
+                            <th th:text="#{payMethod.updatedAt.label}" scope="col" />
+                            <th th:text="#{payMethod.deleted.label}" scope="col" />
+                            <th th:text="#{payMethod.name.label}" scope="col" />
+                            <th th:text="#{payMethod.status.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="payMethod : ${payMethods}">
+                            <td th:text="${payMethod.id}" />
+                            <td th:text="${payMethod.updatedAt}" />
+                            <td th:text="${payMethod.deleted}" />
+                            <td th:text="${payMethod.name}" />
+                            <td th:text="${payMethod.status}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/payMethods/edit/{id}(id=${payMethod.id})}" th:text="#{payMethod.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/payMethods/delete/{id}(id=${payMethod.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{payMethod.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

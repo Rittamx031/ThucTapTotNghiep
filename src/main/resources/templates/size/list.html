@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{size.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{size.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/sizes/add}" th:text="#{size.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${sizes.empty}" th:text="#{size.list.empty}" />
+            <div th:if="${!sizes.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{size.id.label}" scope="col" />
+                            <th th:text="#{size.code.label}" scope="col" />
+                            <th th:text="#{size.name.label}" scope="col" />
+                            <th th:text="#{size.status.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="size : ${sizes}">
+                            <td th:text="${size.id}" />
+                            <td th:text="${size.code}" />
+                            <td th:text="${size.name}" />
+                            <td th:text="${size.status}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/sizes/edit/{id}(id=${size.id})}" th:text="#{size.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/sizes/delete/{id}(id=${size.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{size.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

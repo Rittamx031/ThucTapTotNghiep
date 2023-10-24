@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{color.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{color.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/colors/add}" th:text="#{color.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${colors.empty}" th:text="#{color.list.empty}" />
+            <div th:if="${!colors.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{color.id.label}" scope="col" />
+                            <th th:text="#{color.code.label}" scope="col" />
+                            <th th:text="#{color.name.label}" scope="col" />
+                            <th th:text="#{color.status.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="color : ${colors}">
+                            <td th:text="${color.id}" />
+                            <td th:text="${color.code}" />
+                            <td th:text="${color.name}" />
+                            <td th:text="${color.status}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/colors/edit/{id}(id=${color.id})}" th:text="#{color.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/colors/delete/{id}(id=${color.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{color.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

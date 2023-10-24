@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{imageSockDetail.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{imageSockDetail.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/imageSockDetails/add}" th:text="#{imageSockDetail.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${imageSockDetails.empty}" th:text="#{imageSockDetail.list.empty}" />
+            <div th:if="${!imageSockDetails.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{imageSockDetail.id.label}" scope="col" />
+                            <th th:text="#{imageSockDetail.status.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="imageSockDetail : ${imageSockDetails}">
+                            <td th:text="${imageSockDetail.id}" />
+                            <td th:text="${imageSockDetail.status}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/imageSockDetails/edit/{id}(id=${imageSockDetail.id})}" th:text="#{imageSockDetail.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/imageSockDetails/delete/{id}(id=${imageSockDetail.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{imageSockDetail.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

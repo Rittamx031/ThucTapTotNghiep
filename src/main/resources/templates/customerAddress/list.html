@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{customerAddress.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{customerAddress.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/customerAddresses/add}" th:text="#{customerAddress.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${customerAddresses.empty}" th:text="#{customerAddress.list.empty}" />
+            <div th:if="${!customerAddresses.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{customerAddress.id.label}" scope="col" />
+                            <th th:text="#{customerAddress.updatedAt.label}" scope="col" />
+                            <th th:text="#{customerAddress.deleted.label}" scope="col" />
+                            <th th:text="#{customerAddress.address.label}" scope="col" />
+                            <th th:text="#{customerAddress.city.label}" scope="col" />
+                            <th th:text="#{customerAddress.country.label}" scope="col" />
+                            <th th:text="#{customerAddress.customer.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="customerAddress : ${customerAddresses}">
+                            <td th:text="${customerAddress.id}" />
+                            <td th:text="${customerAddress.updatedAt}" />
+                            <td th:text="${customerAddress.deleted}" />
+                            <td th:text="${customerAddress.address}" />
+                            <td th:text="${customerAddress.city}" />
+                            <td th:text="${customerAddress.country}" />
+                            <td th:text="${customerAddress.customer}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/customerAddresses/edit/{id}(id=${customerAddress.id})}" th:text="#{customerAddress.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/customerAddresses/delete/{id}(id=${customerAddress.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{customerAddress.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

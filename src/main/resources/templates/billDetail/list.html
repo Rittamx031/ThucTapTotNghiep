@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{billDetail.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{billDetail.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/billDetails/add}" th:text="#{billDetail.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${billDetails.empty}" th:text="#{billDetail.list.empty}" />
+            <div th:if="${!billDetails.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{billDetail.id.label}" scope="col" />
+                            <th th:text="#{billDetail.updatedAt.label}" scope="col" />
+                            <th th:text="#{billDetail.deleted.label}" scope="col" />
+                            <th th:text="#{billDetail.quantity.label}" scope="col" />
+                            <th th:text="#{billDetail.price.label}" scope="col" />
+                            <th th:text="#{billDetail.status.label}" scope="col" />
+                            <th th:text="#{billDetail.bill.label}" scope="col" />
+                            <th th:text="#{billDetail.sockDetail.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="billDetail : ${billDetails}">
+                            <td th:text="${billDetail.id}" />
+                            <td th:text="${billDetail.updatedAt}" />
+                            <td th:text="${billDetail.deleted}" />
+                            <td th:text="${billDetail.quantity}" />
+                            <td th:text="${billDetail.price}" />
+                            <td th:text="${billDetail.status}" />
+                            <td th:text="${billDetail.bill}" />
+                            <td th:text="${billDetail.sockDetail}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/billDetails/edit/{id}(id=${billDetail.id})}" th:text="#{billDetail.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/billDetails/delete/{id}(id=${billDetail.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{billDetail.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

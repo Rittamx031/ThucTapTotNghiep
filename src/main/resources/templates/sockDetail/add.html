@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{sockDetail.add.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{sockDetail.add.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/sockDetails}" th:text="#{sockDetail.add.back}" class="btn btn-secondary" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('sockDetail')}" />
+            <form th:action="${requestUri}" method="post">
+                <div th:replace="~{fragments/forms::inputRow(object='sockDetail', field='quantity', type='number')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='sockDetail', field='unitBasePrice')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='sockDetail', field='status', type='checkbox')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='sockDetail', field='sock', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='sockDetail', field='pattern', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='sockDetail', field='material', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='sockDetail', field='size', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='sockDetail', field='color', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='sockDetail', field='discount', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='sockDetail', field='image', type='select')}" />
+                <input type="submit" th:value="#{sockDetail.add.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{customer.add.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{customer.add.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/customers}" th:text="#{customer.add.back}" class="btn btn-secondary" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('customer')}" />
+            <form th:action="${requestUri}" method="post">
+                <div th:replace="~{fragments/forms::inputRow(object='customer', field='updatedAt', inputClass='js-datetimepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='customer', field='deleted', type='checkbox')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='customer', field='name')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='customer', field='email')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='customer', field='phone')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='customer', field='birthday', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='customer', field='status', type='checkbox')}" />
+                <input type="submit" th:value="#{customer.add.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>
