@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import stock.thuctap.stock.domain.Bill;
+import stock.thuctap.stock.domain.BillDetailId;
 import stock.thuctap.stock.domain.SockDetail;
 import stock.thuctap.stock.model.BillDetailDTO;
 import stock.thuctap.stock.repos.BillRepository;
@@ -19,7 +20,6 @@ import stock.thuctap.stock.repos.SockDetailRepository;
 import stock.thuctap.stock.service.BillDetailService;
 import stock.thuctap.stock.util.CustomCollectors;
 import stock.thuctap.stock.util.WebUtils;
-
 
 @Controller
 @RequestMapping("/billDetails")
@@ -68,27 +68,31 @@ public class BillDetailController {
         return "redirect:/billDetails";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable final Long id, final Model model) {
-        model.addAttribute("billDetail", billDetailService.get(id));
+    @GetMapping("/edit/{idbill}/{idproduct}")
+    public String edit(@PathVariable("idbill") final Integer idbill, @PathVariable("idproduct") final Integer idproduct,
+            final Model model) {
+        model.addAttribute("billDetail", billDetailService.get(new BillDetailId(idbill, idproduct)));
         return "billDetail/edit";
     }
 
-    @PostMapping("/edit/{id}")
-    public String edit(@PathVariable final Long id,
+    @PostMapping("/edit/{idbill}/{idproduct}")
+    public String edit(@PathVariable("idbill") final Integer idbill,
+            @PathVariable("idproduct") final Integer idproduct,
             @ModelAttribute("billDetail") @Valid final BillDetailDTO billDetailDTO,
             final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "billDetail/edit";
         }
-        billDetailService.update(id, billDetailDTO);
+        billDetailService.update(new BillDetailId(idbill, idproduct), billDetailDTO);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("billDetail.update.success"));
         return "redirect:/billDetails";
     }
 
-    @PostMapping("/delete/{id}")
-    public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
-        billDetailService.delete(id);
+    @PostMapping("/delete/{idbill}/{idproduct}")
+    public String delete(@PathVariable("idproduct") final Integer idproduct,
+            @PathVariable("idbill") final Integer idbill,
+            final RedirectAttributes redirectAttributes) {
+        billDetailService.delete(new BillDetailId(idbill, idproduct));
         redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("billDetail.delete.success"));
         return "redirect:/billDetails";
     }

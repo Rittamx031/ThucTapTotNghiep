@@ -17,7 +17,6 @@ import stock.thuctap.stock.repos.PayMethodRepository;
 import stock.thuctap.stock.util.NotFoundException;
 import stock.thuctap.stock.util.WebUtils;
 
-
 @Service
 public class BillService {
 

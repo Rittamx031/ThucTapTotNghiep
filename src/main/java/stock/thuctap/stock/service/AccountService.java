@@ -1,5 +1,6 @@
 package stock.thuctap.stock.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import stock.thuctap.stock.repos.CartRepository;
 import stock.thuctap.stock.repos.CustomerRepository;
 import stock.thuctap.stock.util.NotFoundException;
 import stock.thuctap.stock.util.WebUtils;
-
 
 @Service
 public class AccountService {
@@ -42,12 +42,16 @@ public class AccountService {
     }
 
     public Integer create(final AccountDTO accountDTO) {
+        accountDTO.setUpdatedAt(LocalDateTime.now());
+
         final Account account = new Account();
         mapToEntity(accountDTO, account);
         return accountRepository.save(account).getId();
     }
 
     public void update(final Integer id, final AccountDTO accountDTO) {
+        accountDTO.setUpdatedAt(LocalDateTime.now());
+
         final Account account = accountRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         mapToEntity(accountDTO, account);
@@ -75,8 +79,9 @@ public class AccountService {
         account.setEmail(accountDTO.getEmail());
         account.setPassword(accountDTO.getPassword());
         account.setStatus(accountDTO.getStatus());
-        final Customer customer = accountDTO.getCustomer() == null ? null : customerRepository.findById(accountDTO.getCustomer())
-                .orElseThrow(() -> new NotFoundException("customer not found"));
+        final Customer customer = accountDTO.getCustomer() == null ? null
+                : customerRepository.findById(accountDTO.getCustomer())
+                        .orElseThrow(() -> new NotFoundException("customer not found"));
         account.setCustomer(customer);
         return account;
     }

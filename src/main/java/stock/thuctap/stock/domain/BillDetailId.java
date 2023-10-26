@@ -17,8 +17,8 @@ import java.io.Serializable;
 @ToString
 @EqualsAndHashCode
 @Embeddable
-public class CartDetailId implements Serializable {
-    private long id_cart;
+public class BillDetailId implements Serializable {
+    private Integer id_bill;
 
-    private long id_sock_detail;
+    private Integer id_sock_detail;
 }

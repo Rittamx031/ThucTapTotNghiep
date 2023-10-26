@@ -1,17 +1,18 @@
 package stock.thuctap.stock.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import stock.thuctap.stock.domain.Bill;
 import stock.thuctap.stock.domain.BillDetail;
+import stock.thuctap.stock.domain.BillDetailId;
 import stock.thuctap.stock.domain.SockDetail;
 import stock.thuctap.stock.model.BillDetailDTO;
 import stock.thuctap.stock.repos.BillDetailRepository;
 import stock.thuctap.stock.repos.BillRepository;
 import stock.thuctap.stock.repos.SockDetailRepository;
 import stock.thuctap.stock.util.NotFoundException;
-
 
 @Service
 public class BillDetailService {
@@ -34,31 +35,32 @@ public class BillDetailService {
                 .toList();
     }
 
-    public BillDetailDTO get(final Long id) {
+    public BillDetailDTO get(final BillDetailId id) {
         return billDetailRepository.findById(id)
                 .map(billDetail -> mapToDTO(billDetail, new BillDetailDTO()))
                 .orElseThrow(NotFoundException::new);
     }
 
-    public Long create(final BillDetailDTO billDetailDTO) {
+    public BillDetailId create(final BillDetailDTO billDetailDTO) {
+        billDetailDTO.setUpdatedAt(LocalDateTime.now());
         final BillDetail billDetail = new BillDetail();
         mapToEntity(billDetailDTO, billDetail);
         return billDetailRepository.save(billDetail).getId();
     }
 
-    public void update(final Long id, final BillDetailDTO billDetailDTO) {
-        final BillDetail billDetail = billDetailRepository.findById(id)
+    public void update(final BillDetailId billDetailId, final BillDetailDTO billDetailDTO) {
+        billDetailDTO.setUpdatedAt(LocalDateTime.now());
+        final BillDetail billDetail = billDetailRepository.findById(billDetailId)
                 .orElseThrow(NotFoundException::new);
         mapToEntity(billDetailDTO, billDetail);
         billDetailRepository.save(billDetail);
     }
 
-    public void delete(final Long id) {
+    public void delete(final BillDetailId id) {
         billDetailRepository.deleteById(id);
     }
 
     private BillDetailDTO mapToDTO(final BillDetail billDetail, final BillDetailDTO billDetailDTO) {
-        billDetailDTO.setId(billDetail.getId());
         billDetailDTO.setUpdatedAt(billDetail.getUpdatedAt());
         billDetailDTO.setDeleted(billDetail.getDeleted());
         billDetailDTO.setQuantity(billDetail.getQuantity());
@@ -71,18 +73,22 @@ public class BillDetailService {
     }
 
     private BillDetail mapToEntity(final BillDetailDTO billDetailDTO, final BillDetail billDetail) {
+        billDetail.setId(new BillDetailId(billDetailDTO.getBill(), billDetailDTO.getSockDetail()));
         billDetail.setUpdatedAt(billDetailDTO.getUpdatedAt());
         billDetail.setDeleted(billDetailDTO.getDeleted());
         billDetail.setQuantity(billDetailDTO.getQuantity());
         billDetail.setPrice(billDetailDTO.getPrice());
         billDetail.setNote(billDetailDTO.getNote());
         billDetail.setStatus(billDetailDTO.getStatus());
-        final Bill bill = billDetailDTO.getBill() == null ? null : billRepository.findById(billDetailDTO.getBill())
-                .orElseThrow(() -> new NotFoundException("bill not found"));
+        final Bill bill = billDetailDTO.getBill() == null ? null
+                : billRepository.findById(billDetailDTO.getBill())
+                        .orElseThrow(() -> new NotFoundException("bill not found"));
         billDetail.setBill(bill);
-        final SockDetail sockDetail = billDetailDTO.getSockDetail() == null ? null : sockDetailRepository.findById(billDetailDTO.getSockDetail())
-                .orElseThrow(() -> new NotFoundException("sockDetail not found"));
+        final SockDetail sockDetail = billDetailDTO.getSockDetail() == null ? null
+                : sockDetailRepository.findById(billDetailDTO.getSockDetail())
+                        .orElseThrow(() -> new NotFoundException("sockDetail not found"));
         billDetail.setSockDetail(sockDetail);
+        billDetail.setId(new BillDetailId(bill.getId(), sockDetail.getId()));
         return billDetail;
     }
 

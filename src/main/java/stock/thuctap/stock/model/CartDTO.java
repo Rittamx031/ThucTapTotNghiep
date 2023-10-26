@@ -2,6 +2,7 @@ package stock.thuctap.stock.model;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,24 +10,21 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CartDetailDTO {
+public class CartDTO {
 
-    private Long id;
+    private Integer id;
 
     private LocalDateTime updatedAt;
 
     private Boolean deleted;
 
-    @NotNull
-    private Integer quantity;
+    private LocalDateTime dateCreate;
 
     private String note;
 
-    @NotNull
+    
     private Integer status;
 
-    private Integer cart;
-
-    private Integer sockDetail;
+    private Integer account;
 
 }

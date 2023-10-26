@@ -16,8 +16,6 @@
             <form th:action="${requestUri}" method="post">
                 <div th:replace="~{fragments/forms::inputRow(object='blog', field='title')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='blog', field='path', type='textarea')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='blog', field='dateCreate', inputClass='js-datepicker')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='blog', field='dateUpdate', inputClass='js-datepicker')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='blog', field='content', type='textarea')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='blog', field='status', type='checkbox')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='blog', field='sockDetailBlogSockDetails', type='multiselect')}" />

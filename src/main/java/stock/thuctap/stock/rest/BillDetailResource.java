@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import stock.thuctap.stock.domain.BillDetailId;
 import stock.thuctap.stock.model.BillDetailDTO;
 import stock.thuctap.stock.service.BillDetailService;
-
 
 @RestController
 @RequestMapping(value = "/api/billDetails", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,28 +33,31 @@ public class BillDetailResource {
         return ResponseEntity.ok(billDetailService.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BillDetailDTO> getBillDetail(@PathVariable final Long id) {
-        return ResponseEntity.ok(billDetailService.get(id));
+    @GetMapping("/{idbill}/{idproduct}")
+    public ResponseEntity<BillDetailDTO> getBillDetail(@PathVariable("idbill") final Integer idbill,
+            @PathVariable("idproduct") final Integer idproduct) {
+        return ResponseEntity.ok(billDetailService.get(new BillDetailId(idbill, idproduct)));
     }
 
     @PostMapping
-    public ResponseEntity<Long> createBillDetail(
+    public ResponseEntity<BillDetailId> createBillDetail(
             @RequestBody @Valid final BillDetailDTO billDetailDTO) {
-        final Long createdId = billDetailService.create(billDetailDTO);
+        final BillDetailId createdId = billDetailService.create(billDetailDTO);
         return new ResponseEntity<>(createdId, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Long> updateBillDetail(@PathVariable final Long id,
+    @PutMapping("/{idbill}/{idproduct}")
+    public ResponseEntity<BillDetailId> updateBillDetail(@PathVariable("idbill") final Integer idbill,
+            @PathVariable("idproduct") final Integer idproduct,
             @RequestBody @Valid final BillDetailDTO billDetailDTO) {
-        billDetailService.update(id, billDetailDTO);
-        return ResponseEntity.ok(id);
+        billDetailService.update(new BillDetailId(idbill, idproduct), billDetailDTO);
+        return ResponseEntity.ok(new BillDetailId(idbill, idproduct));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBillDetail(@PathVariable final Long id) {
-        billDetailService.delete(id);
+    @DeleteMapping("/{idbill}/{idproduct}")
+    public ResponseEntity<Void> deleteBillDetail(@PathVariable("idbill") final Integer idbill,
+            @PathVariable("idproduct") final Integer idproduct) {
+        billDetailService.delete(new BillDetailId(idbill, idproduct));
         return ResponseEntity.noContent().build();
     }
 

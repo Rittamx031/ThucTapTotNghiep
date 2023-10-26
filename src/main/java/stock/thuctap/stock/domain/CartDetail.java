@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,15 +32,17 @@ public class CartDetail {
     @Column(columnDefinition = "varchar(max)")
     private String note;
 
-    @Column(nullable = false, length = 100)
-    private String status;
+    
+    private Integer status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cart")
+    @MapsId("id_cart")
     private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_sock_detail")
+    @MapsId("id_sock_detail")
     private SockDetail sockDetail;
 
 }

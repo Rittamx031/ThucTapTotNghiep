@@ -21,7 +21,6 @@ public class BlogDTO {
     @NotNull
     private String path;
 
-    @NotNull
     private LocalDate dateCreate;
 
     private LocalDate dateUpdate;

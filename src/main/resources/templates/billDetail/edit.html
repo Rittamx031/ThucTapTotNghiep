@@ -14,15 +14,13 @@
             </div>
             <div th:replace="~{fragments/forms::globalErrors('billDetail')}" />
             <form th:action="${requestUri}" method="post">
-                <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='id', disabled=true, type='number')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='updatedAt', inputClass='js-datetimepicker')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='deleted', type='checkbox')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='quantity', type='number')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='price')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='note', type='textarea')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='status')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='bill', type='select')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='sockDetail', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='bill', type='hidden')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='sockDetail', type='hidden')}" />
                 <input type="submit" th:value="#{billDetail.edit.headline}" class="btn btn-primary mt-4" />
             </form>
         </div>

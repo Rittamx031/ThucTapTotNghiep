@@ -1,5 +1,6 @@
 package stock.thuctap.stock.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,6 @@ import stock.thuctap.stock.repos.CustomerAddressRepository;
 import stock.thuctap.stock.repos.CustomerRepository;
 import stock.thuctap.stock.util.NotFoundException;
 import stock.thuctap.stock.util.WebUtils;
-
 
 @Service
 public class CustomerService {
@@ -47,12 +47,14 @@ public class CustomerService {
     }
 
     public Integer create(final CustomerDTO customerDTO) {
+        customerDTO.setUpdatedAt(LocalDateTime.now());
         final Customer customer = new Customer();
         mapToEntity(customerDTO, customer);
         return customerRepository.save(customer).getId();
     }
 
     public void update(final Integer id, final CustomerDTO customerDTO) {
+        customerDTO.setUpdatedAt(LocalDateTime.now());
         final Customer customer = customerRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         mapToEntity(customerDTO, customer);

@@ -13,7 +13,6 @@ public class AccountDTO {
 
     private Integer id;
 
-    @NotNull
     private LocalDateTime updatedAt;
 
     private Boolean deleted;

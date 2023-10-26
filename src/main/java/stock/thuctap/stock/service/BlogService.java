@@ -1,6 +1,8 @@
 package stock.thuctap.stock.service;
 
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +14,6 @@ import stock.thuctap.stock.model.BlogDTO;
 import stock.thuctap.stock.repos.BlogRepository;
 import stock.thuctap.stock.repos.SockDetailRepository;
 import stock.thuctap.stock.util.NotFoundException;
-
 
 @Service
 @Transactional
@@ -41,12 +42,14 @@ public class BlogService {
     }
 
     public Integer create(final BlogDTO blogDTO) {
+        blogDTO.setDateCreate(LocalDate.now());
         final Blog blog = new Blog();
         mapToEntity(blogDTO, blog);
         return blogRepository.save(blog).getId();
     }
 
     public void update(final Integer id, final BlogDTO blogDTO) {
+        blogDTO.setDateUpdate(LocalDate.now());
         final Blog blog = blogRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         mapToEntity(blogDTO, blog);
@@ -79,8 +82,10 @@ public class BlogService {
         blog.setContent(blogDTO.getContent());
         blog.setStatus(blogDTO.getStatus());
         final List<SockDetail> sockDetailBlogSockDetails = sockDetailRepository.findAllById(
-                blogDTO.getSockDetailBlogSockDetails() == null ? Collections.emptyList() : blogDTO.getSockDetailBlogSockDetails());
-        if (sockDetailBlogSockDetails.size() != (blogDTO.getSockDetailBlogSockDetails() == null ? 0 : blogDTO.getSockDetailBlogSockDetails().size())) {
+                blogDTO.getSockDetailBlogSockDetails() == null ? Collections.emptyList()
+                        : blogDTO.getSockDetailBlogSockDetails());
+        if (sockDetailBlogSockDetails.size() != (blogDTO.getSockDetailBlogSockDetails() == null ? 0
+                : blogDTO.getSockDetailBlogSockDetails().size())) {
             throw new NotFoundException("one of sockDetailBlogSockDetails not found");
         }
         blog.setSockDetailBlogSockDetails(sockDetailBlogSockDetails.stream().collect(Collectors.toSet()));

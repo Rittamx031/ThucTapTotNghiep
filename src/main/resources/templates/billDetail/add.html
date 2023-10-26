@@ -14,7 +14,6 @@
             </div>
             <div th:replace="~{fragments/forms::globalErrors('billDetail')}" />
             <form th:action="${requestUri}" method="post">
-                <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='updatedAt', inputClass='js-datetimepicker')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='deleted', type='checkbox')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='quantity', type='number')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='billDetail', field='price')}" />

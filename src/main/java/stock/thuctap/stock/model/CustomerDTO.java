@@ -14,7 +14,6 @@ public class CustomerDTO {
 
     private Integer id;
 
-    @NotNull
     private LocalDateTime updatedAt;
 
     private Boolean deleted;

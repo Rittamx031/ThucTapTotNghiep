@@ -34,13 +34,13 @@ public class Cart {
     private Boolean deleted;
 
     @Column(nullable = false,name="date_create")
-    private LocalDate dateCreate;
+    private LocalDateTime dateCreate;
 
     @Column(columnDefinition = "varchar(max)")
     private String note;
 
-    @Column(nullable = false, length = 100)
-    private String status;
+    @Column
+    private Integer status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_account")

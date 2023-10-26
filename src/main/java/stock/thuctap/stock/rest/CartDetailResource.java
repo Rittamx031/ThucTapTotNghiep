@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import stock.thuctap.stock.domain.CartDetailId;
 import stock.thuctap.stock.model.CartDetailDTO;
 import stock.thuctap.stock.service.CartDetailService;
-
 
 @RestController
 @RequestMapping(value = "/api/cartDetails", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,28 +33,31 @@ public class CartDetailResource {
         return ResponseEntity.ok(cartDetailService.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CartDetailDTO> getCartDetail(@PathVariable final Long id) {
-        return ResponseEntity.ok(cartDetailService.get(id));
+    @GetMapping("/{idcart}/{idproduct}")
+    public ResponseEntity<CartDetailDTO> getCartDetail(@PathVariable("idcart") final Long idcart,
+            @PathVariable("idproduct") final Long idproduct) {
+        return ResponseEntity.ok(cartDetailService.get(new CartDetailId(idcart, idproduct)));
     }
 
     @PostMapping
-    public ResponseEntity<Long> createCartDetail(
+    public ResponseEntity<CartDetailId> createCartDetail(
             @RequestBody @Valid final CartDetailDTO cartDetailDTO) {
-        final Long createdId = cartDetailService.create(cartDetailDTO);
+        final CartDetailId createdId = cartDetailService.create(cartDetailDTO);
         return new ResponseEntity<>(createdId, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Long> updateCartDetail(@PathVariable final Long id,
+    @PutMapping("/{idcart}/{idproduct}")
+    public ResponseEntity<CartDetailId> updateCartDetail(@PathVariable("idcart") final Long idcart,
+            @PathVariable("idproduct") final Long idproduct,
             @RequestBody @Valid final CartDetailDTO cartDetailDTO) {
-        cartDetailService.update(id, cartDetailDTO);
-        return ResponseEntity.ok(id);
+        cartDetailService.update(new CartDetailId(idcart, idproduct), cartDetailDTO);
+        return ResponseEntity.ok(new CartDetailId(idcart, idproduct));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCartDetail(@PathVariable final Long id) {
-        cartDetailService.delete(id);
+    @DeleteMapping("/{idcart}/{idproduct}")
+    public ResponseEntity<Void> deleteCartDetail(@PathVariable("idcart") final Long idcart,
+            @PathVariable("idproduct") final Long idproduct) {
+        cartDetailService.delete(new CartDetailId(idcart, idproduct));
         return ResponseEntity.noContent().build();
     }
 

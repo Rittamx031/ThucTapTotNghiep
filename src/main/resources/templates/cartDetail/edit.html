@@ -14,14 +14,10 @@
             </div>
             <div th:replace="~{fragments/forms::globalErrors('cartDetail')}" />
             <form th:action="${requestUri}" method="post">
-                <div th:replace="~{fragments/forms::inputRow(object='cartDetail', field='id', disabled=true, type='number')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='cartDetail', field='updatedAt', inputClass='js-datetimepicker')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='cartDetail', field='deleted', type='checkbox')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='cartDetail', field='quantity', type='number')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='cartDetail', field='note', type='textarea')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='cartDetail', field='status')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='cartDetail', field='cart', type='select')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='cartDetail', field='sockDetail', type='select')}" />
                 <input type="submit" th:value="#{cartDetail.edit.headline}" class="btn btn-primary mt-4" />
             </form>
         </div>

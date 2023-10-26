@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import stock.thuctap.stock.domain.Cart;
+import stock.thuctap.stock.domain.CartDetailId;
 import stock.thuctap.stock.domain.SockDetail;
 import stock.thuctap.stock.model.CartDetailDTO;
 import stock.thuctap.stock.repos.CartRepository;
@@ -19,7 +20,6 @@ import stock.thuctap.stock.repos.SockDetailRepository;
 import stock.thuctap.stock.service.CartDetailService;
 import stock.thuctap.stock.util.CustomCollectors;
 import stock.thuctap.stock.util.WebUtils;
-
 
 @Controller
 @RequestMapping("/cartDetails")
@@ -68,27 +68,27 @@ public class CartDetailController {
         return "redirect:/cartDetails";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable final Long id, final Model model) {
-        model.addAttribute("cartDetail", cartDetailService.get(id));
+    @GetMapping("/edit/{idcart}/{idproduct}")
+    public String edit(@PathVariable final Long idcart, @PathVariable final Long idproduct, final Model model) {
+        model.addAttribute("cartDetail", cartDetailService.get(new CartDetailId(idcart, idproduct)));
         return "cartDetail/edit";
     }
 
-    @PostMapping("/edit/{id}")
-    public String edit(@PathVariable final Long id,
+    @PostMapping("/edit/{idcart}/{idproduct}")
+    public String edit(@PathVariable final Long idcart, @PathVariable final Long idproduct,
             @ModelAttribute("cartDetail") @Valid final CartDetailDTO cartDetailDTO,
             final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "cartDetail/edit";
         }
-        cartDetailService.update(id, cartDetailDTO);
+        cartDetailService.update(new CartDetailId(idcart, idproduct), cartDetailDTO);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("cartDetail.update.success"));
         return "redirect:/cartDetails";
     }
 
-    @PostMapping("/delete/{id}")
-    public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
-        cartDetailService.delete(id);
+    @PostMapping("/delete/{idcart}/{idproduct}")
+    public String delete(@PathVariable final Long idcart, @PathVariable final Long idproduct, final RedirectAttributes redirectAttributes) {
+        cartDetailService.delete(new CartDetailId(idcart, idproduct));
         redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("cartDetail.delete.success"));
         return "redirect:/cartDetails";
     }

@@ -1,5 +1,6 @@
 package stock.thuctap.stock.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import stock.thuctap.stock.repos.CartDetailRepository;
 import stock.thuctap.stock.repos.CartRepository;
 import stock.thuctap.stock.repos.SockDetailRepository;
 import stock.thuctap.stock.util.NotFoundException;
-
 
 @Service
 public class CartDetailService {
@@ -42,12 +42,14 @@ public class CartDetailService {
     }
 
     public CartDetailId create(final CartDetailDTO cartDetailDTO) {
+        cartDetailDTO.setUpdatedAt(LocalDateTime.now());
         final CartDetail cartDetail = new CartDetail();
         mapToEntity(cartDetailDTO, cartDetail);
         return cartDetailRepository.save(cartDetail).getId();
     }
 
     public void update(final CartDetailId id, final CartDetailDTO cartDetailDTO) {
+        cartDetailDTO.setUpdatedAt(LocalDateTime.now());
         final CartDetail cartDetail = cartDetailRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         mapToEntity(cartDetailDTO, cartDetail);
@@ -75,12 +77,15 @@ public class CartDetailService {
         cartDetail.setQuantity(cartDetailDTO.getQuantity());
         cartDetail.setNote(cartDetailDTO.getNote());
         cartDetail.setStatus(cartDetailDTO.getStatus());
-        final Cart cart = cartDetailDTO.getCart() == null ? null : cartRepository.findById(cartDetailDTO.getCart())
-                .orElseThrow(() -> new NotFoundException("cart not found"));
+        final Cart cart = cartDetailDTO.getCart() == null ? null
+                : cartRepository.findById(cartDetailDTO.getCart())
+                        .orElseThrow(() -> new NotFoundException("cart not found"));
         cartDetail.setCart(cart);
-        final SockDetail sockDetail = cartDetailDTO.getSockDetail() == null ? null : sockDetailRepository.findById(cartDetailDTO.getSockDetail())
-                .orElseThrow(() -> new NotFoundException("sockDetail not found"));
+        final SockDetail sockDetail = cartDetailDTO.getSockDetail() == null ? null
+                : sockDetailRepository.findById(cartDetailDTO.getSockDetail())
+                        .orElseThrow(() -> new NotFoundException("sockDetail not found"));
         cartDetail.setSockDetail(sockDetail);
+        cartDetail.setId(new CartDetailId(cart.getId(), sockDetail.getId()));
         return cartDetail;
     }
 
